@@ -3,7 +3,7 @@
 import { DDSLoader } from 'three/examples/jsm/loaders/DDSLoader.js';
 import { TGALoader } from 'three/examples/jsm/loaders/TGALoader.js';
 import { WebGLRenderer } from 'three';
-// import { read } from 'ktx-parse';
+import { read } from 'ktx-parse';
 
 export interface LoadedImage {
     width: number;
@@ -13,14 +13,12 @@ export interface LoadedImage {
     mimeType: string;
 }
 
-const webglRenderInstance = new WebGLRenderer();
-
 export class ImageLoader {
     private ktx2Loader?: any;
     private ddsLoader?: DDSLoader;
     private tgaLoader?: TGALoader;
 
-    constructor(webglRender: WebGLRenderer =webglRenderInstance) {
+    constructor(_webglRender?: WebGLRenderer) {
         // 初始化加载器，但KTX2Loader在没有renderer时可能无法工作
         // 我们会处理这种情况
         try {
@@ -177,7 +175,7 @@ export class ImageLoader {
 
         // 方案1：尝试使用ktx-parse解析基本信息
         try { 
-            const ktx = undefined;// read(new Uint8Array(arrayBuffer));
+            const ktx = read(new Uint8Array(arrayBuffer));
             console.log('KTX2 Info:', ktx);
             // 创建占位图，显示KTX2信息
             const canvas = document.createElement('canvas');
